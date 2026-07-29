@@ -1,0 +1,20 @@
+changelog:
+  exclude:
+    labels:
+      - skip-changelog
+  categories:
+    - title: Product experience
+      labels:
+        - enhancement
+        - feature
+    - title: Documentation and demos
+      labels:
+        - documentation
+        - demo
+    - title: Maintenance
+      labels:
+        - maintenance
+        - dependencies
+    - title: Other changes
+      labels:
+        - "*"
