@@ -3,6 +3,8 @@
 JARVIS is a local-first personal assistant combining voice interaction, system
 automation, live information panels, and privacy-conscious AI routing.
 
+[Launch the interactive product demo](https://ayoubodf-dev.github.io/jarvis-showcase/)
+
 ![JARVIS live command demo](docs/images/demo.png)
 
 ## Highlights

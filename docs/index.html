@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#031018">
+  <meta name="description" content="Interactive, source-free product demo of JARVIS Local Assistant.">
+  <title>JARVIS Local Assistant — Live Demo</title>
+  <style>
+    :root{color-scheme:dark;--bg:#020b12;--panel:#071b27;--line:#0e4d60;--cyan:#59eaff;--mint:#55e7c2;--text:#dffaff;--muted:#71a5b2}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 48% 38%,#07384b 0,#03151f 23%,var(--bg) 58%);color:var(--text);font:500 15px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(#0a304050 1px,transparent 1px),linear-gradient(90deg,#0a304050 1px,transparent 1px);background-size:54px 54px}
+    .shell{position:relative;max-width:1240px;margin:auto;padding:28px}.top{display:flex;justify-content:space-between;align-items:center;gap:20px}.brand small,.eyebrow{display:block;color:var(--muted);letter-spacing:.28em;font-size:11px}.brand h1{margin:2px 0;font-size:clamp(36px,6vw,68px);letter-spacing:.18em;color:var(--cyan);text-shadow:0 0 24px #35ddff55}.status{border:1px solid var(--line);border-radius:10px;padding:12px 16px;color:var(--mint);background:#061720cc}
+    .grid{display:grid;grid-template-columns:250px 1fr 330px;gap:22px;margin-top:38px}.panel{border:1px solid var(--line);border-radius:14px;background:#061722d9;box-shadow:0 18px 60px #0007;padding:18px}.metric{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.ring{aspect-ratio:1;border:6px solid #153c49;border-top-color:var(--cyan);border-radius:50%;display:grid;place-items:center;font-weight:800}.weather{margin-top:14px}.weather strong{display:block;font-size:32px;color:var(--cyan)}
+    .core{display:grid;place-items:center;min-height:480px}.orb{width:min(280px,70vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#efffff 0,#6bf2ff 10%,#1889b9 27%,#062436 53%,transparent 55%);box-shadow:0 0 90px #39e8ff88;position:relative}.orb:before,.orb:after{content:"";position:absolute;inset:-28px;border:1px solid #42e7ff;border-radius:50%;animation:spin 8s linear infinite}.orb:after{inset:-50px;border-style:dashed;animation-direction:reverse}@keyframes spin{to{transform:rotate(360deg)}}.standby{letter-spacing:.35em;color:var(--cyan);text-align:center;margin-top:62px}
+    .channel{min-height:480px;display:flex;flex-direction:column}.log{flex:1;overflow:auto;max-height:330px}.message{border:1px solid #18566c;border-radius:10px;padding:12px;margin:10px 0;background:#071f2a}.message.user{border-color:#3ccbb0}.composer{display:flex;gap:8px;margin-top:12px}.composer input{min-width:0;flex:1;border:1px solid var(--line);background:#021018;color:var(--text);border-radius:9px;padding:12px}.composer button,.chips button{border:0;border-radius:9px;padding:12px;background:var(--cyan);color:#03202a;font-weight:900;cursor:pointer}.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.chips button{background:#0a2b39;color:var(--cyan);border:1px solid var(--line);font-size:12px}.note{color:var(--muted);font-size:12px;margin-top:24px}.links{margin-top:22px}.links a{color:var(--cyan)}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}.core{min-height:360px}.channel{min-height:420px}.top{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="top"><div class="brand"><small>JUST A RATHER VERY INTELLIGENT SYSTEM</small><h1>J.A.R.V.I.S</h1></div><div class="status">● LINK SECURE · MOROCCO</div></header>
+    <div class="grid">
+      <aside>
+        <section class="panel"><span class="eyebrow">SYSTEMS</span><div class="metric"><div class="ring">42</div><div class="ring">88</div><div class="ring">96</div></div><small>CPU · PWR · DSK</small></section>
+        <section class="panel weather"><span class="eyebrow">ATMOSPHERE · MOROCCO</span><strong>21°</strong><span>FOG · WIND 1 KM/H</span></section>
+        <div class="chips" aria-label="Suggested commands">
+          <button data-command="Summarize today's priorities">Priorities</button>
+          <button data-command="Check local system status">System status</button>
+          <button data-command="Create a reminder for 6 PM">Reminder</button>
+        </div>
+      </aside>
+      <section class="core" aria-label="JARVIS core status"><div><div class="orb"></div><div class="standby" id="mode">STANDBY</div></div></section>
+      <section class="panel channel"><span class="eyebrow">COMM CHANNEL</span><div class="log" id="log"><div class="message">J.A.R.V.I.S online. Awaiting your command.</div></div><form class="composer" id="form"><input id="command" aria-label="Command" placeholder="Speak or type a command…" autocomplete="off"><button>Send</button></form><p class="note">Interactive product preview. Automation and private AI services are intentionally not connected.</p></section>
+    </div>
+    <footer class="links"><a href="https://github.com/ayoubodf-dev/jarvis-showcase">View product showcase on GitHub</a></footer>
+  </main>
+  <script>
+    const replies={priorities:"You have three priorities: review the release, verify device tests, and update the roadmap.",system:"Local services are healthy. CPU 42%, power 88%, storage 96%.",reminder:"Reminder prepared for 6:00 PM. Confirmation would be required in the full application."};
+    const form=document.querySelector("#form"),input=document.querySelector("#command"),log=document.querySelector("#log"),mode=document.querySelector("#mode");
+    function run(text){if(!text.trim())return;log.insertAdjacentHTML("beforeend",`<div class="message user">${text.replace(/[<>]/g,"")}</div>`);mode.textContent="PROCESSING";setTimeout(()=>{const key=/system/i.test(text)?"system":/remind/i.test(text)?"reminder":"priorities";log.insertAdjacentHTML("beforeend",`<div class="message">${replies[key]}</div>`);log.scrollTop=log.scrollHeight;mode.textContent="STANDBY"},450)}
+    form.addEventListener("submit",e=>{e.preventDefault();run(input.value);input.value=""});document.querySelectorAll("[data-command]").forEach(b=>b.addEventListener("click",()=>run(b.dataset.command)));
+  </script>
+</body>
+</html>
